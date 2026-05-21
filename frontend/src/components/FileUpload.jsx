@@ -19,14 +19,14 @@ export default function FileUpload({ onUploadSuccess }) {
       setError('Please upload a valid CSV file.');
       return;
     }
-    
+
     setLoading(true);
     setError(null);
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/upload', formData, {
+      const response = await axios.post('https://sulback.sahilsidhu.pro/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       onUploadSuccess(response.data);
@@ -51,19 +51,19 @@ export default function FileUpload({ onUploadSuccess }) {
       <p style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>
         Upload your raw CSV data to get started with optimization and machine learning.
       </p>
-      
-      <div 
+
+      <div
         className={`upload-area ${dragOver ? 'drag-over' : ''}`}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
         onClick={() => document.getElementById('file-upload').click()}
       >
-        <input 
-          id="file-upload" 
-          type="file" 
-          accept=".csv" 
-          style={{ display: 'none' }} 
+        <input
+          id="file-upload"
+          type="file"
+          accept=".csv"
+          style={{ display: 'none' }}
           onChange={handleFileChange}
         />
         {loading ? (
@@ -75,7 +75,7 @@ export default function FileUpload({ onUploadSuccess }) {
           </div>
         )}
       </div>
-      
+
       {error && <p style={{ color: 'var(--danger-color)', marginTop: '1rem' }}>{error}</p>}
     </div>
   );

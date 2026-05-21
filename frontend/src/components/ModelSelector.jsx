@@ -23,7 +23,7 @@ export default function ModelSelector({ cleanedData, targetColumn, onTrainSucces
       ...prev,
       [modelName]: !prev[modelName]
     }));
-    
+
     // Initialize hyperparameters if selected and not yet present
     if (!selectedModels[modelName] && !hyperparameters[modelName]) {
       setHyperparameters(prev => ({
@@ -61,7 +61,7 @@ export default function ModelSelector({ cleanedData, targetColumn, onTrainSucces
         hyperparameters: hyperparameters
       };
 
-      const response = await axios.post('http://localhost:8000/api/train', payload);
+      const response = await axios.post('https://sulback.sahilsidhu.pro/api/train', payload);
       onTrainSuccess(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Training failed.');
@@ -71,7 +71,7 @@ export default function ModelSelector({ cleanedData, targetColumn, onTrainSucces
   };
 
   const handleDownload = () => {
-    window.location.href = `http://localhost:8000/api/download/${cleanedData.cleaned_file_id}`;
+    window.location.href = `https://sulback.sahilsidhu.pro/api/download/${cleanedData.cleaned_file_id}`;
   };
 
   return (
@@ -91,21 +91,21 @@ export default function ModelSelector({ cleanedData, targetColumn, onTrainSucces
         {AVAILABLE_MODELS.filter(m => m.type === 'both' || !cleanedData.task_type || m.type === cleanedData.task_type).map(model => (
           <div key={model.name} style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px' }}>
             <div className="checkbox-group" style={{ marginBottom: selectedModels[model.name] ? '1rem' : '0' }}>
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 id={model.name}
                 checked={selectedModels[model.name] || false}
                 onChange={() => handleModelToggle(model.name, model.defaultParams)}
               />
               <label htmlFor={model.name} style={{ margin: 0, fontWeight: 600 }}>{model.name}</label>
             </div>
-            
+
             {selectedModels[model.name] && Object.keys(model.defaultParams).map(param => (
               <div key={param} style={{ marginBottom: '0.5rem' }}>
                 <label style={{ display: 'block', fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.2rem' }}>
                   {param}
                 </label>
-                <input 
+                <input
                   type={typeof model.defaultParams[param] === 'number' ? 'number' : 'text'}
                   value={hyperparameters[model.name]?.[param] || ''}
                   onChange={(e) => handleParamChange(model.name, param, e.target.value)}

@@ -7,7 +7,7 @@ export default function DataCleaning({ fileData, onCleanSuccess, onReset }) {
   const [mode, setMode] = useState('auto');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   // Manual options
   const [options, setOptions] = useState({
     remove_duplicates: false,
@@ -27,10 +27,10 @@ export default function DataCleaning({ fileData, onCleanSuccess, onReset }) {
       setError('Please select a target column to guess/predict.');
       return;
     }
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const payload = {
         file_id: fileData.file_id,
@@ -38,8 +38,8 @@ export default function DataCleaning({ fileData, onCleanSuccess, onReset }) {
         mode: mode,
         ...options
       };
-      
-      const response = await axios.post('http://localhost:8000/api/clean', payload);
+
+      const response = await axios.post('https://sulback.sahilsidhu.pro/api/clean', payload);
       onCleanSuccess(response.data, targetColumn);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to clean data.');
@@ -72,15 +72,15 @@ export default function DataCleaning({ fileData, onCleanSuccess, onReset }) {
       </div>
 
       <div className="form-group" style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-        <button 
-          className={`btn ${mode === 'auto' ? '' : 'btn-secondary'}`} 
+        <button
+          className={`btn ${mode === 'auto' ? '' : 'btn-secondary'}`}
           onClick={() => setMode('auto')}
           style={{ flex: 1 }}
         >
           Auto Clean
         </button>
-        <button 
-          className={`btn ${mode === 'manual' ? '' : 'btn-secondary'}`} 
+        <button
+          className={`btn ${mode === 'manual' ? '' : 'btn-secondary'}`}
           onClick={() => setMode('manual')}
           style={{ flex: 1 }}
         >
@@ -91,28 +91,28 @@ export default function DataCleaning({ fileData, onCleanSuccess, onReset }) {
       {mode === 'manual' && (
         <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
           <div className="checkbox-group">
-            <input type="checkbox" name="remove_duplicates" checked={options.remove_duplicates} onChange={handleOptionChange} id="rm_dup"/>
-            <label htmlFor="rm_dup" style={{margin:0}}>Remove Duplicates</label>
+            <input type="checkbox" name="remove_duplicates" checked={options.remove_duplicates} onChange={handleOptionChange} id="rm_dup" />
+            <label htmlFor="rm_dup" style={{ margin: 0 }}>Remove Duplicates</label>
           </div>
           <div className="checkbox-group">
-            <input type="checkbox" name="drop_nans" checked={options.drop_nans} onChange={handleOptionChange} id="drop_nan"/>
-            <label htmlFor="drop_nan" style={{margin:0}}>Drop Missing Values (NaNs)</label>
+            <input type="checkbox" name="drop_nans" checked={options.drop_nans} onChange={handleOptionChange} id="drop_nan" />
+            <label htmlFor="drop_nan" style={{ margin: 0 }}>Drop Missing Values (NaNs)</label>
           </div>
           <div className="checkbox-group">
-            <input type="checkbox" name="fill_nans_mean" checked={options.fill_nans_mean} onChange={handleOptionChange} id="fill_nan"/>
-            <label htmlFor="fill_nan" style={{margin:0}}>Fill Numeric Missing Values with Mean</label>
+            <input type="checkbox" name="fill_nans_mean" checked={options.fill_nans_mean} onChange={handleOptionChange} id="fill_nan" />
+            <label htmlFor="fill_nan" style={{ margin: 0 }}>Fill Numeric Missing Values with Mean</label>
           </div>
           <div className="checkbox-group">
-            <input type="checkbox" name="encode_categorical" checked={options.encode_categorical} onChange={handleOptionChange} id="enc_cat"/>
-            <label htmlFor="enc_cat" style={{margin:0}}>Encode Categorical Variables</label>
+            <input type="checkbox" name="encode_categorical" checked={options.encode_categorical} onChange={handleOptionChange} id="enc_cat" />
+            <label htmlFor="enc_cat" style={{ margin: 0 }}>Encode Categorical Variables</label>
           </div>
           <div className="checkbox-group">
-            <input type="checkbox" name="standardize" checked={options.standardize} onChange={handleOptionChange} id="std"/>
-            <label htmlFor="std" style={{margin:0}}>Standardize Numeric Data</label>
+            <input type="checkbox" name="standardize" checked={options.standardize} onChange={handleOptionChange} id="std" />
+            <label htmlFor="std" style={{ margin: 0 }}>Standardize Numeric Data</label>
           </div>
           <div className="checkbox-group">
-            <input type="checkbox" name="normalize" checked={options.normalize} onChange={handleOptionChange} id="norm"/>
-            <label htmlFor="norm" style={{margin:0}}>Normalize Numeric Data</label>
+            <input type="checkbox" name="normalize" checked={options.normalize} onChange={handleOptionChange} id="norm" />
+            <label htmlFor="norm" style={{ margin: 0 }}>Normalize Numeric Data</label>
           </div>
         </div>
       )}
