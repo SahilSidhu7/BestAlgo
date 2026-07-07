@@ -12,8 +12,7 @@ WORKDIR /app
 
 # Install backend deps at BUILD TIME (as root)
 COPY backend/requirements.txt ./backend/requirements.txt
-RUN pip install --no-cache-dir -r ./backend/requirements.txt
-
+RUN pip install --no-cache-dir --timeout=120 --retries=5 -r ./backend/requirements.txt
 # Install and build frontend at BUILD TIME (as root)
 COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm install
